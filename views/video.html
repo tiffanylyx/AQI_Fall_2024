@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="d3.v7.js"></script>
+<script src="d3-arrow.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+
+<link rel="stylesheet" href="../font.css">
+<head>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<title>Vertical Navigation Bar</title>
+
+</head>
+<body>
+<div class = 'container' id = 'content'>
+
+  <div class="sidebar">
+    <a href="/" style="height: 11%;padding: 0px 15px;">
+    <img src="../logo_new.png" alt="Logo" class="sidebar-logo">
+  </a>
+
+    <a href="/"  class="active" style="text-align:center; display:block;">
+      <img src="../icon/home.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>ContAQT Platform
+    </a>
+    <a href="/video" style="text-align:center; display:block;">
+      <img src="../icon/video.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>Constructing AQI</a>
+    <a href="" style="text-align:center; display:block;">
+      <img src="../icon/data.svg"  style="width:35%;margin-top:20px;margin-bottom:20px;" >
+      <br>
+      Data Source</a>
+    <a href="" style="text-align:center; display:block;">
+      <img src="../icon/more.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>
+      More</a>
+  </div>
+<div style="width:93%;height:100%;flex-grow: 1;">
+
+<div id = 'content' style=' height: 100%;margin-top:-100px;justify-content: center;display: flex;align-items: center;'>
+  <video height=85% autoplay loop>
+    <source src="../AQI_VIDEO.mp4" type="video/mp4" />
+  </video>
+</div>
+</div>
+</div>
+<script>
+    // Prevent the context menu (right-click menu) from appearing.
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    }, false);
+</script>

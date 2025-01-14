@@ -1,0 +1,46 @@
+/* Center Bubble Container */
+.center-bubble {
+  position: absolute;
+  top: 50%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  width: 180px; /* Adjust width as needed */
+  height: 180px; /* Adjust height as needed */
+  background-color: rgba(244, 244, 244, 0.8); /* 80% transparent light gray */
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  padding:10px;
+  animation: up-down 2s ease-in-out infinite;
+}
+
+/* Inner Bubble Content */
+.bubble_scroll {
+  text-align: center;
+  color: #3c8df3;
+  font-size: 16px;
+}
+
+.icon_scroll img {
+  width: 70px; /* Adjust icon size as needed */
+  height: auto;
+  margin-bottom: 0px;
+  margin-top: 20px;
+}
+
+.bubble_scroll p {
+  color: #3c8df3;
+  font-size: 14px;
+}
+/* Up and Down Animation */
+@keyframes up-down {
+  0%, 100% {
+    transform: translate(-50%, -50%); /* Original position */
+  }
+  50% {
+    transform: translate(-50%, calc(-50% - 100px)); /* Move up by 10px */
+  }
+}

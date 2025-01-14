@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./bubble_scroll.css">
+    <link rel="stylesheet" href="./bubble.css">
+</head>
+<!-- Load d3.js -->
+<script src="d3.v7.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+
+<link rel="stylesheet" href="font.css">
+<div class = 'container' id = 'content'>
+
+  <div class="sidebar">
+    <a href="/" style="height: 11%;padding: 0px 15px;">
+    <img src="logo_new.png" alt="Logo" class="sidebar-logo">
+  </a>
+
+    <a href="/"  class="active" style="text-align:center; display:block;">
+      <img src="icon/home.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>ContAQT Platform
+    </a>
+    <a href="/video" style="text-align:center; display:block; position: relative;">
+      <img src="icon/video.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>Constructing AQI
+      <span class="notification-dot" id="video-dot" style="display: block;"></span>
+    </a>
+    <a href="" style="text-align:center; display:block;">
+      <img src="icon/data.svg"  style="width:35%;margin-top:20px;margin-bottom:20px;" >
+      <br>
+      Data Source</a>
+    <a href="" style="text-align:center; display:block;">
+      <img src="icon/more.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>
+      More</a>
+  </div>
+<div style="width:93%;height:100%;flex-grow: 1;">
+<div class="top-nav">
+  <a href="/visualizing">Decoding Air Quality Index</a>
+  <a href="/" >Realtime AQI</a>
+  <a href="/calendar" class="active">AQI Calendar</a>
+</div>
+  <div id = "home" style="display: flex;padding-top:100px;">
+  <div class="left-div" id="left-div" >
+    <div id="overlay" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+      <!-- Content inside overlay -->
+      <div style="position:relative; background:#fff; margin:10% auto; width:50%;border-radius: 15px;">
+          <div id="overlay-content1">
+            <h2 style="text-align:left; margin-bottom:20px;">Particulate Matter (PM2.5 & PM10)</h2>
+            <div style="display:flex; justify-content:space-between;">
+              <div style="padding-right: 15px;width:40%"> <!-- Adjusted the padding for spacing -->
+                <div>
+                  <p id='p-what'>Particulate Matter is a general term for solid and liquid particle pollution in the atmosphere. Particulate Matter can be 2.5 or 10 micrometers in diameter.</p>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: center; align-items: center;width:55%"> <!-- Centered the image in the div -->
+                <img id = 'illustration' src="image1.png" alt="Carbon Monoxide" style="width:100%; height: auto;"> <!-- The image will now fill its container -->
+              </div>
+            </div>
+          </div>
+          <div id="overlay-content2">
+            <h4 id = 'p-title' class = 'note' >Nitrogen Dioxide</h4>
+              <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; align-items: left;">
+                <div style="grid-column: 1; text-align: left;padding-right:15px;">
+                  <h3 style="margin-bottom: 10px;margin-top:4px">Cause</h3>
+                  <p id='p-where' style="margin-bottom: 20px;">NO2 is primarily produced from the burning of fuels in vehicles, power plants, and industrial facilities. It forms from reactions involving nitrogen oxides released during combustion processes.</p>
+                </div>
+                <div style="grid-column: 2 ; text-align: left;padding-left:15px;">
+                  <h3 style="margin-bottom: 10px;margin-top:4px">Impact</h3>
+                  <p id='p-how'style="margin-bottom: 20px;">NO2 worsens respiratory conditions in humans, contributes to ozone formation; affects nature by contributing to acid rain, damaging vegetation, and reducing biodiversity.</p>
+                </div>
+                <div style="grid-column: 1; display: flex; justify-content: top; align-items: center;">
+                  <!-- First image -->
+                  <img id = 'cause' src="image1.png" alt="cause" style="width:100%;height: auto;">
+                </div>
+                <div style="grid-column: 2; display: flex; justify-content: top; align-items: center;">
+                  <!-- Second image -->
+                  <img id = 'harm' src="image1.png" alt="harm" style="width:100%;height: auto;">
+
+              </div>
+            </div>
+            </div>
+        <span id="close-icon" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:36px; padding:20px;">&times;</span>
+        <p id = "note_card" > 1/2 </p>
+    </div>
+
+    </div>
+    <div id="overlay_DP" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+      <div id="overlay2" style="position:relative; background:#fff; margin:10% auto; width:50%;border-radius: 15px;">
+            <div style="display: flex; justify-content: center; align-items: center; padding:60px;">
+              <img src="illustration/DP_card.png" style="width:95%;">
+            </div>
+        <span id="close-icon-DP" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:36px; padding:20px;">&times;</span>
+      </div>
+    </div>
+    <div id="overlay_color" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+      <div id="overlay3" style="position:relative; background:#fff; margin:10% auto; width:50%;border-radius: 15px;">
+         <div style="display: flex; justify-content: center; align-items: center; padding-top: 40px;padding-bottom: 80px;">
+          <img src="illustration/color.png" style="width:90%;">
+        </div>
+        <span id="close-icon-color" style="position:absolute; top:0; right:0; cursor:pointer; font-size:36px; font-weight:bold; padding:20px;">&times;</span>
+      </div>
+    </div>
+    <div id="overlay_Missing" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+      <div id="overlay4" style="position:relative; background:#fff; margin:10% auto; width:50%;border-radius: 15px;height:50vh;">
+            <div style="display: flex; justify-content: center; align-items: center; padding:60px;">
+              <img src="illustration/Missing_Data.png" style="width:95%;">
+            </div>
+        <span id="close-icon-Missing" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:36px; padding:20px;">&times;</span>
+      </div>
+    </div>
+    <div id="explain_text" style="padding:1vh 4vw;">
+      <div class="header-container">
+        <h2 style="margin-top: 0vh;">2014-2023</h2>
+        <img src="illustration/location.png" style="width:6vw;margin-top: -2vh;margin-bottom: -1vh;">
+      </div>
+
+      <h1 style = "margin-top:10px;">AQI Trends</h1>
+      <p style="padding-bottom: 20px;">Throughout years, Atlanta generally experienced good or moderate air quality. Nevertheless, several challenges persisted, influenced by factors like <b><i>traffic congestion, industrial activities, pollen during Spring, high temperature during Summer, residential heating during Winter, and specific events such as wildfires</i></b>. Explore the AQI calendar of the the back 10 years and see if you can discover any noticeable patterns and potential causes!</p>
+      <h1>Data, Data, Data</h2>
+      <p>The annual air quality data for Atlanta, Georgia, was sourced from <b><i>the United States Environmental Protection Agency (EPA) Air Quality System Data Mart</i></b>, an open-source database. The dataset here was collected by a monitoring station in South DeKalb. Across the United States, pollutant concentrations are monitored by over 4,000 stations. This extensive network provides critical data for assessing and managing air quality nationwide.</p>
+    </div>
+
+
+    <div id = 'daily_chart'  style="height:100%;flex-grow: 1;display:none;">
+
+      <div class="floating-base floating-legend-left" id ="floating-legend-left" >
+
+      <ul>
+        <li><span class="indicator good"></span>Good</li>
+        <li><span class="indicator moderate"></span>Moderate</li>
+        <li><span class="indicator unhealthy-sg"></span>Unhealthy for Sensitive Groups</li>
+        <li><span class="indicator unhealthy"></span>Unhealthy</li>
+        <li><span class="indicator very-unhealthy"></span>Very Unhealthy</li>
+        <li><span class="indicator hazardous"></span>Hazardous</li>
+      </ul>
+    </div>
+    </div>
+</div>
+<div class="right-div" id = "right-div">
+  <div class="header" id="year-view-header" style="display:none">
+    <button class = "back-btn" id="back-to-all-years-btn" style = "left: 38vw;"> < Back to Years</button>
+    <button class= "prev-btn" id="prev-year-btn">❮</button>
+    <span class = "header-title" id="year-title">2023</span>
+    <button class= "next-btn" id="next-year-btn">❯</button>
+  </div>
+  <div class="header" id="calendar-header" style="display:none">
+    <button class = "back-btn" id="back-to-year-btn"style = "left: 49.6vw;">< Back to Months</button>
+    <button class= "prev-btn" id="prev-month-btn">❮</button>
+    <span  class = "header-title" id="calendar-title">August 2023</span>
+    <button class= "next-btn" id="next-month-btn">❯</button>
+  </div>
+    <img id ="color_bar" style = "width:36vw;position: fixed;padding-left:0.3vw;margin-top:-0.5vh;" src="illustration/color_categorized.png">
+
+  <div class = 'year_view' id = 'year_view' >
+  </div>
+  <div class="center-bubble" id="centerBubble">
+    <div class="bubble_scroll">
+      <div class="icon_scroll">
+        <img src="icon/scroll.png" alt="Icon" />
+      </div>
+      <p>Scroll to explore yearly trends</p>
+    </div>
+</div>
+<div class="bubble-container" id="tapBubble" style=" top: 48%;left: 92%;">
+  <div class="bubble">
+    <div class="icon">
+      <img src="icon/DoubleTap.png" alt="Icon" /> <!-- Replace with your image path -->
+    </div>
+    <p>Tap a year to explore</p>
+  </div>
+</div>
+
+  <div id = 'calendar'>
+  </div>
+  <!-- Content for right div -->
+</div>
+</div>
+</div>
+</div>
+<script src = "general.js"></script>
+<script src = "set_up_calender.js"></script>
+<script src = "year_calender.js"></script>
+<script src = "year_view.js"></script>
+<script>
+    // Prevent the context menu (right-click menu) from appearing.
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    }, false);
+// Select the two elements
+const centerBubble = document.getElementById("centerBubble");
+const tapBubble = document.getElementById("tapBubble");
+
+// Flag to control whether toggling is active
+let isTogglingEnabled = true;
+let toggleInterval;
+
+// Function to toggle visibility
+function toggleBubbles() {
+  // Check if toggling is enabled
+  if (!isTogglingEnabled) return;
+
+  // Check if centerBubble is visible
+  if (centerBubble.style.display === "none") {
+    // Show centerBubble and hide tapBubble
+    centerBubble.style.display = "block";
+    tapBubble.style.display = "none";
+  } else {
+    // Hide centerBubble and show tapBubble
+    centerBubble.style.display = "none";
+    tapBubble.style.display = "block";
+  }
+}
+
+// Function to start the toggling interval
+function startToggleInterval() {
+  // Clear any existing interval to prevent multiple intervals
+  clearInterval(toggleInterval);
+
+  // Start a new interval
+  toggleInterval = setInterval(toggleBubbles, 5000); // 20 seconds
+}
+
+// Function to stop the toggling interval
+function stopToggleInterval() {
+  clearInterval(toggleInterval); // Clear the interval
+}
+
+// Function to enable or disable toggling
+function setTogglingEnabled(enabled) {
+  isTogglingEnabled = enabled;
+
+  if (enabled) {
+    startToggleInterval(); // Restart the interval if enabled
+  } else {
+    stopToggleInterval(); // Stop the interval if disabled
+  }
+}
+
+// Initialize display
+centerBubble.style.display = "block";
+tapBubble.style.display = "none";
+
+// Start the toggle interval for the first time
+startToggleInterval();
+
+
+
+
+</script>

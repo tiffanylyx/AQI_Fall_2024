@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="bubble.css">
+</head>
+<!-- Load d3.js -->
+<script src="d3.v7.js"></script>
+<script src="d3-arrow.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+
+<link rel="stylesheet" href="font.css">
+<div class = 'container' id = 'content'>
+
+  <div class="sidebar">
+    <a href="/" style="height: 11%;padding: 0px 15px;">
+    <img src="logo_new.png" alt="Logo" class="sidebar-logo">
+  </a>
+
+    <a href="/"  class="active" style="text-align:center; display:block;">
+      <img src="icon/home.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>ContAQT Platform
+    </a>
+    <a href="/video" style="text-align:center; display:block;">
+      <img src="icon/video.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>Constructing AQI</a>
+    <a href="" style="text-align:center; display:block;">
+      <img src="icon/data.svg"  style="width:35%;margin-top:20px;margin-bottom:20px;" >
+      <br>
+      Data Source</a>
+    <a href="" style="text-align:center; display:block;">
+      <img src="icon/more.svg" style="width:40%;margin-top:20px;margin-bottom:20px;" >
+      <br>
+      More</a>
+  </div>
+<div style="width:93%;height:100%;flex-grow: 1;">
+<div class="top-nav">
+  <a href="/visualizing"  class="active">Decoding Air Quality Index</a>
+  <a href="/">Realtime AQI
+    <span class="notification-dot" id="Realtime-dot"></span>
+  </a>
+  <a href="/calendar">AQI Calendar</a>
+</div>
+
+<div id = 'bar_chart'  style="position: relative;width: 100%;height:100%">
+
+<h1 style = "position: fixed;padding-top:60px;padding-left:17vw;">Q. How does Air Quality Index (AQI) Work?</h1>
+<div id="explain-group">
+  <div id="text-box" class="text-box"></div>
+  <div id="explain-text" class="explain-text">Your text goes here</div>
+</div>
+<img id ="color_bar" style = "width:36vw;position: fixed;padding-top:29vh;padding-left:17vw;" src="illustration/color_short.png">
+<div class="bubble-container" id="bubbleContainer_rosa" style="top:55vh;left:65%;display:none">
+  <div class="bubble">
+    <div class="icon">
+      <img src="icon/DoubleTap.png" alt="Icon" />
+    </div>
+    <p>Tap this area to see today's AQI!</p>
+  </div>
+</div>
+
+<div class="navigation-container">
+  <!-- Previous Button -->
+  <button id = "previousButton" class="oval-button prev-button">
+    <span class="icon">&laquo;</span> <!-- Double left arrow -->
+    Prev
+  </button>
+
+  <!-- Progress dots container -->
+  <div class="progress-dots-container">
+      <span class="progress-dot" data-step="0"></span>
+      <span class="progress-dot" data-step="1"></span>
+      <span class="progress-dot" data-step="2"></span>
+      <span class="progress-dot" data-step="3"></span>
+      <span class="progress-dot" data-step="4"></span>
+      <span class="progress-dot" data-step="5"></span>
+      <span class="progress-dot" data-step="6"></span>
+  </div>
+
+  <!-- Next Button -->
+  <button id = "nextButton" class="oval-button next-button">
+    Next
+    <span class="icon">&raquo;</span> <!-- Double right arrow -->
+  </button>
+</div>
+</div>
+
+</div>
+
+<div id="overlay" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+  <!-- Content inside overlay -->
+  <div style="position:relative; background:#fff; margin:10% auto; width:50%;border-radius: 15px;">
+      <div id="overlay-content1">
+        <h2 style="text-align:left; margin-bottom:20px;">Particulate Matter (PM2.5 & PM10)</h2>
+        <div style="display:flex; justify-content:space-between;">
+          <div style="padding-right: 15px;width:40%"> <!-- Adjusted the padding for spacing -->
+            <div>
+              <p id='p-what'>Particulate Matter is a general term for solid and liquid particle pollution in the atmosphere. Particulate Matter can be 2.5 or 10 micrometers in diameter.</p>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: center; align-items: center;width:55%"> <!-- Centered the image in the div -->
+            <img id = 'illustration' src="image1.png" alt="Carbon Monoxide" style="width:100%; height: auto;"> <!-- The image will now fill its container -->
+          </div>
+        </div>
+      </div>
+      <div id="overlay-content2">
+        <h4 id = 'p-title' class = 'note' >Nitrogen Dioxide</h4>
+          <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; align-items: left;">
+            <div style="grid-column: 1; text-align: left;padding-right:15px;">
+              <h3 style="margin-bottom: 10px;margin-top:4px">Cause</h3>
+              <p id='p-where' style="margin-bottom: 20px;">NO2 is primarily produced from the burning of fuels in vehicles, power plants, and industrial facilities. It forms from reactions involving nitrogen oxides released during combustion processes.</p>
+            </div>
+            <div style="grid-column: 2 ; text-align: left;padding-left:15px;">
+              <h3 style="margin-bottom: 10px;margin-top:4px">Impact</h3>
+              <p id='p-how'style="margin-bottom: 20px;">NO2 worsens respiratory conditions in humans, contributes to ozone formation; affects nature by contributing to acid rain, damaging vegetation, and reducing biodiversity.</p>
+            </div>
+            <div style="grid-column: 1; display: flex; justify-content: top; align-items: center;">
+              <!-- First image -->
+              <img id = 'cause' src="image1.png" alt="cause" style="width:100%;height: auto;">
+            </div>
+            <div style="grid-column: 2; display: flex; justify-content: top; align-items: center;">
+              <!-- Second image -->
+              <img id = 'harm' src="image1.png" alt="harm" style="width:100%;height: auto;">
+
+          </div>
+        </div>
+        </div>
+    <span id="close-icon" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:36px; padding-top:10px;padding-right:24px;">&times;</span>
+    <p id = "note_card" > 1/2 </p>
+</div>
+
+</div>
+<div id="overlay_DP" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+  <div id="overlay2" style="position:relative; background:#fff; margin:10% auto; width:50%;border-radius: 15px;">
+        <div style="display: flex; justify-content: center; align-items: center; padding:60px;">
+          <img src="illustration/DP_card.png" style="width:95%;">
+        </div>
+    <span id="close-icon-DP" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:36px; padding-top:10px;padding-right:24px;">&times;</span>
+  </div>
+</div>
+<div id="overlay_color" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+  <div id="overlay3" style="position:relative; background:#fff; margin:10% auto; width:50%;border-radius: 15px;">
+     <div style="display: flex; justify-content: center; align-items: center; padding-top: 40px;padding-bottom: 80px;">
+      <img src="illustration/color.png" style="width:90%;">
+    </div>
+    <span id="close-icon-color" style="position:absolute; top:0; right:0; cursor:pointer; font-size:36px; font-weight:bold; padding-top:10px;padding-right:24px;">&times;</span>
+  </div>
+</div>
+
+
+
+
+<script src = "general.js"></script>
+<script src = "set_up_bar.js"></script>
+<script>
+    // Prevent the context menu (right-click menu) from appearing.
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    }, false);
+</script>

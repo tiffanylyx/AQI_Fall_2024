@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./bubble_scroll.css">
+</head>
+<!-- Load d3.js -->
+<script src="d3.v7.js"></script>
+
+<link rel="stylesheet" href="font.css">
+<div class="navbar">
+  <div class="navbar-section navbar-left">
+    <img src="logo.png" alt="Logo" class="logo">
+    <div class="bottom-section">
+    <img src="NSF.png" alt="NSF Logo" class="nsf-logo">
+    <div class="supporting-text" style="padding-top:20px;">
+    <p>TILES Lab</p>
+    <p>GT-Visual Analytics Lab</p>
+    <p>CEISMC</p>
+  </div>
+</div>
+</div>
+<div class="navbar-section navbar-center">
+  <div class="nav-title">What is Air Quality Index?</div>
+  <br>
+  <div class="nav-text "style='padding-top: 2%;'>The Air Quality Index (AQI) is a numerical scale used to communicate how polluted the air is in a specific area.
+    It ranges from 0 to 500, with higher numbers indicating worse air quality.
+    The AQI value is determined by the highest concentrations of six pollutants.
+
+    This exhibit explains how AQI is computed, and display the AQI data of Atlanta area in 2023. Let’s learn more about Air Quality by understanding and analyzing the AQI trend in Atlanta!</div>
+
+  <div class="nav-text" style='font-size:14px;padding-top: 5%;'>Data source: US Environmental Protection Agency. Air Quality System Data Mart [internet database] available via https://www.epa.gov/outdoor-air-quality-data. Accessed Mar 25th, 2024.</div>
+</div>
+<div class="navbar-section navbar-right">
+  <a href="index.html" >Snapshot</a>
+  <a href="visualizing.html">Decoding AQI</a>
+
+  <a href="calender.html"class = 'active'>Trend<i class="check-icon fas fa-check"></i></a>
+  <a href="video.html">Context</a>
+</div>
+</div>
+<div class = 'container' id = 'content' style ='height: 75vh;'>
+  <div class="right-div">
+
+  <div class="calendar-header">
+    <button id="prev-month-btn">❮</button>
+    <span id="calendar-title">August 2023</span>
+    <button id="next-month-btn">❯</button>
+  </div>
+
+  <div id = 'calendar'>
+
+  </div>
+    <!-- Content for right div -->
+  </div>
+  <div class="left-div" style="height: 100%;">
+    <div id="overlay" style="display:none; position:fixed; top:26%; left:50%; right:0; bottom:0; width:50%;background:rgba(0,0,0,0.1); z-index:100;">
+      <!-- Content inside overlay -->
+      <div style="position:relative; background:#fff; margin:10% auto; width:80%;border-radius: 15px;">
+          <div id="overlay-content1">
+            <h2 style="text-align:left; margin-bottom:20px;">Particulate Matter (PM2.5 & PM10)</h2>
+            <div style="display:flex; justify-content:space-between;">
+              <div style="padding-right: 15px;width:40%"> <!-- Adjusted the padding for spacing -->
+                <div>
+                  <p id='p-what'>Particulate Matter is a general term for solid and liquid particle pollution in the atmosphere. Particulate Matter can be 2.5 or 10 micrometers in diameter.</p>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: center; align-items: center;width:55%"> <!-- Centered the image in the div -->
+                <img id = 'illustration' src="image1.png" alt="Carbon Monoxide" style="width:100%; height: auto;"> <!-- The image will now fill its container -->
+              </div>
+            </div>
+
+            <p class = "note" style = "display: flex; justify-content: center; align-items: center;font-size:12px"> 1/2 </p>
+          </div>
+          <div id="overlay-content2" style="font-family: Arial, sans-serif;">
+            <p id = 'p-title' class = 'note'>Nitrogen Dioxide</p>
+              <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; align-items: left;">
+                <div style="grid-column: 1; text-align: left;padding-right:15px;">
+                  <h3 style="margin-bottom: 10px;margin-top:4px">Cause</h3>
+                  <p id='p-where'>NO2 is primarily produced from the burning of fuels in vehicles, power plants, and industrial facilities. It forms from reactions involving nitrogen oxides released during combustion processes.</p>
+                </div>
+                <div style="grid-column: 2 ; text-align: left;padding-left:15px;">
+                  <h3 style="margin-bottom: 10px;margin-top:4px">Impact</h3>
+                  <p id='p-how'>NO2 worsens respiratory conditions in humans, contributes to ozone formation; affects nature by contributing to acid rain, damaging vegetation, and reducing biodiversity.</p>
+                </div>
+                <div style="grid-column: 1; display: flex; justify-content: center; align-items: center;">
+                  <!-- First image -->
+                  <img id = 'cause' src="image1.png" alt="cause" style="width:90%;padding:10px;height: auto;">
+                </div>
+                <div style="grid-column: 2; display: flex; justify-content: center; align-items: center;">
+                  <!-- Second image -->
+                  <img id = 'harm' src="image1.png" alt="harm" style="width:90%;padding:10px;height: auto;">
+
+              </div>
+            </div>
+            <p class = "note" style = "display: flex; justify-content: center; align-items: center;font-size:12px"> 2/2 </p>
+          </div>
+        <span id="close-icon" style="position:absolute; top:0; right:0; cursor:pointer; font-size:24px; font-weight:bold; padding:10px;">&times;</span>
+
+    </div>
+    </div>
+    <div id="overlay_DP" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+      <div id="overlay2" style="position:relative; background:#fff; margin:10% auto; padding:20px; width:65%;height:70%">
+          <div id="overlay-content-DP" style="position:relative; background:#fff; margin:10% auto; padding:20px; width:90%;">
+            <h2 style="text-align:center; margin-bottom:20px;">Driver Pollutant</h2>
+            <div class="triangle"id = 'DP'>  <div class="exclamation-mark">!</div></div>
+
+            <div style="display:flex; justify-content:space-between;">
+              <div class="center-container">
+                <p>The driver pollutant is indicated with this symbol. </p>
+                <br>
+
+                <p>The driver pollutant is the pollutant  highest AQI value. This pollutant determines the overall AQI for the day. </p>
+                <br>
+                <p>In Atlanta, GA it is usually PM 2.5 or Ozone.</p>
+
+              </div>
+
+            </div>
+          </div>
+        <span id="close-icon-DP" style="position:absolute; top:0; right:0; cursor:pointer; font-size:24px; font-weight:bold; padding:10px;">&times;</span>
+      </div>
+    </div>
+    <div id="overlay_color" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+      <div id="overlay3" style="position:relative; background:#fff; margin:10% auto;width:65%;height:70%">
+
+          <div id="overlay-content-color" style="position:relative; background:#fff; padding:0px; width:95%;height:100%">
+            <h2 style="text-align:center; margin-bottom:20px;padding-top:20px;">Color Legend</h2>
+
+          </div>
+        <span id="close-icon-color" style="position:absolute; top:0; right:0; cursor:pointer; font-size:24px; font-weight:bold; padding:10px;">&times;</span>
+      </div>
+    </div>
+
+
+    <div id = 'daily_chart'  style="position: relative;width: 100%;height: 100%;">
+
+    <div class="floating-legend-left" id="floating-legend-left">
+
+      <ul>
+        <li><span class="indicator good"></span>Good</li>
+        <li><span class="indicator moderate"></span>Moderate</li>
+        <li><span class="indicator unhealthy-sg"></span>Unhealthy for Sensitive Groups</li>
+        <li><span class="indicator unhealthy"></span>Unhealthy</li>
+        <li><span class="indicator very-unhealthy"></span>Very Unhealthy</li>
+        <li><span class="indicator hazardous"></span>Hazardous</li>
+      </ul>
+    </div>
+    </div>
+</div>
+
+
+</div>
+<script src = "set_up_calender.js"></script>
+<script src = "year_calender.js"></script>
+<script>
+    // Prevent the context menu (right-click menu) from appearing.
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    }, false);
+</script>

@@ -1,0 +1,648 @@
+body, html {
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  background-color:#ffffff;
+  margin: 0;
+  padding: 0;
+  height: 100%; /* This ensures the html and body are full height */
+}
+html {
+  touch-action:none;
+}
+content {
+  width :100%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+* {box-sizing:border-box}
+
+
+
+
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+.axis{
+  font-size: 16px;
+  font-family:sans-serif;
+}
+.x-axis{
+  font-size: 16px;
+  font-family:sans-serif;
+}
+.pullution-axis{
+  font-size: 12px;
+  font-weight: 500;
+}
+.pullution-value{
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.legend{
+  font-size: 22px;
+}
+.rosa_text{
+  font-size:26px;
+  font-weight:600;
+  text-anchor:middle;
+}
+
+
+/* Base class for all floating elements with common properties */
+.floating-base {
+  position: fixed;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(81,81,81, 0.25);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  width: 14%; /* Consider adjusting if different for specific cases */
+}
+
+
+.floating-div-info {
+  top: 56vh;
+  left: 80vw;
+  height:21vh;
+  background-color: #FFF5CB; /* Specific background for this div */
+  align-items: flex-start; /* This will align child elements to the start of the cross axis if needed */
+}
+.floating-div-info p{
+  color: #5F4E18; /* Sets the text color */
+  font-size: 16px; /* Sets the text font size */
+  text-align: left;
+  margin: 0;
+  height:100%;
+  /* Removed align-items: left; because it's not valid.
+     Adjust align-items only if needed for flex items alignment: */
+}
+/* Positioning for specific floating divs */
+.floating-div { top: 16vh; left: 80vw; padding: 6px;}
+.floating-div-left { top: 16%; left: 9%; width: 13%; padding: 6px;}
+.floating-legend { top: 34.5vh; left: 80vw; display: block; max-width: 90%; padding-top: 20px; padding-left:24px; }
+.floating-legend-left { top: 16%; left: 34%; width: 12.5%; display: block; max-width: 90%; padding-bottom: 6px;}
+/* Styling for text elements */
+.aqi-value, .date-text, .text-info, .pollutant-text-left, .pollutant-text-right {
+  font-family: sans-serif;
+}
+
+.aqi-value {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 5px 0;
+  padding-bottom: 16px;
+  padding-top: 16px;
+
+}
+.date-text {
+padding-left: 20px;
+padding-top: 16px;
+padding-bottom: 16px;
+width:100%;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 2px 0;
+  border-bottom: 1px solid #e2e2e2;
+
+}
+.text-info {
+
+padding-bottom: 10px;
+color:#656565;
+
+}
+.pollutant-text-left {
+  font-size: 14px;
+  font-weight: 400;
+  vertical-align: top;
+  display: inline-block; /* or 'block' depending on your layout needs */
+   max-width: 130px; /* Set your desired width */
+   word-wrap: break-word; /* Allows long words to wrap and break onto the next line */
+   text-align: center;
+   color:#656565;
+ }
+.separator {
+display: inline-block;
+vertical-align: top; /* Centers the dot vertically */
+margin: 0 8px; /* Adjust the margin to control spacing around the dot */
+margin-top: -8px;
+font-size:30px;
+color:black;
+}
+.pollutant-text-right {
+  font-size: 14px;
+  font-weight: 400;
+  margin-left:4px;
+  vertical-align: top;
+}
+
+/* Indicator styling */
+.indicator {
+  height: 15px;
+  width: 15px;
+  border-radius: 25%;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.good { background-color: #34B274; }
+.moderate { background-color: #FDD000; }
+.unhealthy-sg { background-color: #F4681A; }
+.unhealthy { background-color: #D3112E; }
+.very-unhealthy { background-color: #8854D0; }
+.hazardous { background-color: #731425; }
+
+/* Additional classes for list styling */
+.floating-legend ul, .floating-legend-left ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.floating-legend li, .floating-legend-left li {
+  margin-bottom: 10px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.separator {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 8px;
+  margin-top: -8px;
+  font-size: 30px;
+  color: black;
+}
+
+
+.container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+.left-div {
+  width: 30%;
+  box-sizing: border-box; /* Padding included in the width */
+  position: relative;
+  margin-right: 1%; /* Adjust the spacing as needed */
+}
+
+.right-div {
+  width: 70%;
+  padding-left:30px;
+  padding-right:30px;
+  padding-top:20px;
+  box-sizing: border-box; /* Padding included in the width */
+  border-left: 1px  dashed #aeaeae;
+}
+/* Add a gradient overlay using :after pseudo-element */
+.right-div::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10%; /* Adjust height as needed for the gradient effect */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 1) 100%);
+  pointer-events: none; /* Allows clicks to pass through to the content below */
+  z-index: 10; /* Ensures the gradient overlay stays on top of content */
+}
+.header {
+  display: flex;
+  justify-content: center; /* Horizontally center the content */
+  align-items: center;     /* Vertically center the content */
+  margin-top: -30px;
+  padding-bottom: 20px;
+  width: 100%;             /* Ensure the header takes full width of its container */
+  text-align: center;      /* Center text for any text directly inside the header */
+}
+.back-btn {
+   position: absolute;
+    top:18vh;
+    order: -1;
+    font-size:20px;
+    padding:6px 20px;
+    background-color: #FAFAFA;
+    border-radius: 10px;
+
+}
+.prev-btn, .next-btn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0 10px;
+  font-size: 24px;
+  padding: 10px; /* Added padding to increase clickable area */
+}
+
+.header-title {
+  font-size: 24px;
+}
+.year_view {
+
+  width: 100%;
+  height: 75vh;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden;
+  padding-right:30px;
+  margin-top: 35px;
+}
+#calendar {
+
+  width: 100%;
+  height: 75vh;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden;
+  padding-right:30px;
+  padding-top:-50px;
+}
+#calendar svg {
+    display: block; /* SVG is block level, so it doesn't create extra space */
+    /* Set a max height if desired, or let it expand to the height of its content */
+}
+.semi-title {
+  font-size: 20px;
+  font-family: sans-serif;
+  font-weight: 500;
+}
+.note {
+  font-size: 12px;
+  font-family: sans-serif;
+  color:#777777;
+}
+#note_card {
+  font-size: 12px;
+  font-family: sans-serif;
+  color:#777777;
+  position: absolute;
+  bottom: 40px; /* 50px from the bottom edge */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  width: 100%; /* Ensure it spans the full width of the container */
+  text-align: center; /* Center the text if it wraps */
+}
+/* Overlay styles */
+.overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 200; /* Specify a stack order in case you're using a z-index scale */
+  cursor: pointer; /* Add a pointer on hover */
+}
+
+
+/* Button to close the overlay */
+.closebtn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+  cursor: pointer;
+}
+.shadow {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.main_text{
+  font-size:20px;
+}
+
+.sub_title{
+  font-size:28px;
+  font-weight:500;
+}
+.center-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Center text inside each <p> */
+    margin: 0; /* Remove default margin */
+width: 100vw; /* Make the container fill the viewport width */
+}
+p {
+    margin: 10px 0; /* Add some space between paragraphs */
+}
+.exclamation-mark {
+  color: white;
+  font-size: 60px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent; /* 左侧透明边框 */
+  border-right: 25px solid transparent; /* 右侧透明边框 */
+  border-bottom: 43px solid black; /* 顶部边框的颜色为黑色，代表三角形的颜色 */
+  margin: auto; /* 水平居中三角形 */
+  padding-top:0px;
+  padding-bottom:10px;
+}
+#overlay-content1{
+  position:relative;
+  background:#fff;
+  padding:40px;
+  padding-bottom:10px;
+  border-bottom: 60px solid #003E93;
+  border-radius: 15px;
+  height:43vh;
+}
+#overlay-content1:after {
+    content: "Tap to see more information 👆"; /* The text you want to display */
+    position: absolute;
+    bottom: -50px; /* Adjust as needed */
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    background: #003E93; /* Background color for the text box */
+    color: white; /* Text color */
+    font-size: 20px; /* Adjust as needed */
+    box-sizing: border-box;
+     border-radius: 15px;
+}
+
+/* This style will initially hide your div layout */
+#overlay-content2 {
+  display: none;
+  position:relative;
+  background:#fff;
+  padding:40px;
+  padding-bottom:0px;
+  border-bottom: 60px solid #003E93;
+  border-radius: 15px;
+  height:43vh;
+}
+
+#overlay-content2:after {
+    content: "Tap to see more information 👆"; /* The text you want to display */
+    position: absolute;
+    bottom: -50px; /* Adjust as needed */
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    background: #003E93; /* Background color for the text box */
+    color: white; /* Text color */
+    font-size: 20px; /* Adjust as needed */
+    box-sizing: border-box;
+     border-radius: 15px;
+}
+
+/* This class will be added via JavaScript to show the div layout */
+.show {
+  display: block;
+}
+/* Container for navigation elements */
+.navigation-container {
+  position: relative;
+  top: 75%; /* Adjust distance from bottom as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Styles for oval button */
+/* Styles for oval buttons */
+.oval-button {
+  background-color: #ffffff; /* White background */
+  color: #333; /* Dark gray text color */
+  padding: 10px 20px; /* Adjust padding to make it oval-shaped */
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px; /* Adjust font size */
+  margin: 4px 8px; /* Space between buttons */
+  cursor: pointer;
+  border-radius: 10px; /* Rounds the button edges */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto; /* Allow width to adjust to content */
+  height: auto; /* Allow height to adjust to content */
+}
+
+/* Icon spacing for 'Prev' button */
+.prev-button .icon {
+  margin-right: 8px; /* Space between arrows and text */
+  margin-top: 4px; /* Space between arrows and text */
+  font-size: 18px;
+}
+
+/* Icon spacing for 'Next' button */
+.next-button .icon {
+  margin-left: 8px; /* Space between text and arrows */
+  margin-top: 4px; /* Space between arrows and text */
+  font-size: 18px;
+}
+
+
+/* Styles for progress dots */
+.progress-dots-container {
+  display: flex;
+  padding: 0 20px; /* Space on the left and right */
+}
+
+.progress-dot {
+  display: inline-block;
+  width: 15px; /* Dot size */
+  height: 15px; /* Dot size */
+  border-radius: 50%; /* Makes the dot round */
+  background-color: #bbb; /* Default inactive color */
+  margin: 0 10px; /* Spacing between dots */
+}
+
+.progress-dot.active {
+  background-color: #333; /* Active step color */
+}
+
+  .sidebar {
+    flex: 0 0 7%;
+    height: 100%;
+    width: 7%;
+    z-index: 1;
+    background-color: #F6F6F7;
+    overflow-x: hidden;
+  align-items: center;
+  }
+
+  .sidebar-logo {
+    display: block;
+    width: 90%; /* Adjust size as needed */
+    height: auto;
+    padding-top:50px;
+
+  }
+
+  .sidebar a {
+    padding: 40px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #353535;
+    display: flex;
+    align-items: flex-end; /* Align text to the bottom */
+    justify-content: center; /* Center text horizontally */
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+
+}
+
+  .sidebar a:hover {
+    background-color: #E2EEFF;
+  }
+  .sidebar a.active {
+    background-color: #E2EEFF;
+    color:#3273D1;
+  }
+  /* Style for the navigation bar */
+   .top-nav {
+     width: 100%;
+     height:11vh;
+     background-color: #ffffff; /* Change as needed */
+     display: flex;
+     justify-content: space-around; /* This will space your menu items evenly */
+     align-items: center;
+     padding-left: 9vw; /* Add padding top and bottom */
+     padding-right: 9vw; /* Add padding top and bottom */
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   .top-nav a {
+    position: relative; /* Needed to position the notification-dot within each link */
+    width: 20vw;
+    text-decoration: none;
+    color: #888888;
+    font-size: 26px;
+    height: 100%;
+    padding-top: 4.5vh;
+    border-bottom: 3px solid transparent;
+    text-align: center;
+  }
+
+   /* Style for the navigation links on hover */
+   .top-nav a:hover {
+     border-bottom: 3px solid #3587FF; /* Change as needed */
+     color: #3587FF;
+   }
+
+   /* Style for the active/current navigation link */
+   .top-nav a.active {
+     border-bottom: 3px solid #3587FF; /* Change as needed */
+     background-color: #ffffff;
+     color: #3587FF;
+   }
+/* Red notification dot */
+/* Notification dot styling */
+.notification-dot {
+  position: absolute;
+  top: 55px; /* Adjust to position relative to the text */
+  right:120px; /* Adjust to position relative to the text */
+  width: 12px;
+  height: 12px;
+  background-color: red;
+  border-radius: 50%; /* Circular shape */
+  display: none; /* Hidden by default */
+}
+
+   #explain_text {
+     background-color: #ffffff; /* White background */
+     padding: 20px; /* Padding inside the div */
+   }
+
+   h1 {
+     color: #00529B; /* Blue color for the header */
+     font-size: 36px; /* Size of the font */
+     margin-bottom: 20px; /* Space after the header */
+     font-weight: 500;
+   }
+   h2 {
+    color: #00529B; /* Blue color for the header */
+    font-size: 26px; /* Size of the font */
+    margin-bottom: 10px; /* Space after the header */
+    font-weight: 500;
+    margin-right:20px;
+  }
+
+
+   p {
+     color: #333333; /* Dark grey color for the text */
+     font-size: 16px; /* Size of the font */
+     line-height: 1.5; /* Spacing between lines */
+     margin-top: 0;
+     margin-bottom: 40px; /* Space after the paragraph */
+   }
+
+   .header-container {
+    display: flex;
+    align-items: center; /* Aligns the image and the text vertically */
+    padding-top: 0;
+  }
+
+  .header-container img {
+    margin-right: 10px; /* Adds space between the image and the heading */
+  }
+
+  #explain-group {
+    position: absolute;
+    width: 100%;
+    height: 10vh;
+    top:20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .explain-text {
+    position: absolute;
+    font-size: 24px;
+    text-align: center;
+    word-wrap: break-word; /* Ensure long words are broken and wrapped */
+  }
+  .text-box {
+    position: absolute;
+    background-color: #E2EEFF;
+    border-radius: 12px; /* Adjust as needed */
+  }
