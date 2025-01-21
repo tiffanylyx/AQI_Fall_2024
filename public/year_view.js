@@ -1,4 +1,4 @@
-
+// this is to set up calenar of the year
 const years = [2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
 let select_year;
 
@@ -61,6 +61,15 @@ data.forEach(function(d) {
       .attr("class", "hour bordered")
       .attr("width", gridSize)
       .attr("height", gridSize)
+      .on("click", function(event, d)
+      {
+        console.log("Clicked card data:", d[0]);
+        d3.select(".year_view").style("display","none")
+        d3.select("#color_bar").style("display","none")
+        create_select_month_direct(svg_calender,parseDate(d[0]),data,info,1)
+      }
+
+    );
     }
     else{
      cards = group.selectAll(".hour")
@@ -76,16 +85,17 @@ data.forEach(function(d) {
     }
 
 
-    group.on("click",function(){
-        d3.select("#year-view-header").style("display","block")
-        select_year = d3.select(this).attr("class")
+    // group.on("click",function(){
+    //     d3.select("#year-view-header").style("display","block")
+    //     select_year = d3.select(this).attr("class")
+    //     console.log(d3.select(this))
+    //
+    //     create_year(data, info,select_year)
+    //     d3.select(".year_view").style("display","none")
+    //     d3.select("#color_bar").style("display","none")
+    //     //document.getElementById('home').style.paddingTop = "50px";
+    // })
 
-        create_year(data, info,select_year)
-        d3.select(".year_view").style("display","none")
-        d3.select("#color_bar").style("display","none")
-        //document.getElementById('home').style.paddingTop = "50px";
-
-    })
     if(view_type=="DP"){
       cards.style("fill", d => DP_fill(d[1].Type));
     }

@@ -1,4 +1,4 @@
-
+// this is to create the monthly calendar
 // set the dimensions and margins of the graph
 select_date = 193
 let container = d3.select('#daily_chart');
@@ -129,12 +129,12 @@ Promise.all([
   else{
     create_bar(date,data_for_day,info)
   }
-  
+
   // The scaling factor, e.g., 2 would double size, 0.5 would halve it
 
 
   // Apply the scaling transform to a group element that contains all other elements
-  
+
 })
 const floatingDiv = d3.select('#daily_chart').append('div')
     .attr('class', 'floating-base floating-div-left')
@@ -220,7 +220,7 @@ bars = barGroups.append('rect')
   for (let index = 0; index < data.length; index++) {
     data_1 = data[index]
     text_group = layer3.append("g").attr("transform",`translate(${(index-5/2)*(padding_bar+barwidth)-60+barwidth/2},${move_y+30})`)
-      
+
     labels1 = text_group.append('text')
     .attr("x", -10) // Position the text in the center of the rect
     .attr("y",0) // Adjust the position accordingly
@@ -243,7 +243,7 @@ bars = barGroups.append('rect')
   textWidth = bbox.width;
   textHeight = bbox.height;
 
-  
+
   // Now append a text element to each group
   labels2 = text_group.append('text')
   .attr("x", 40) // Position the text in the center of the rect
@@ -327,7 +327,7 @@ bars = barGroups.append('rect')
     }
   })
   // Move text to the front if needed (for browsers that don't support 'insert')
- 
+
 
   if(data_1.Type==DP){
   DP_group = text_group.append("g")
@@ -358,7 +358,7 @@ bars = barGroups.append('rect')
   .style("text-decoration", "underline")
   .style("fill", color_fill(AQI_value,view_type)); // Style the text color
 
-  
+
 
   const bbox = DP_info.node().getBBox();
   const textWidth = bbox.width;

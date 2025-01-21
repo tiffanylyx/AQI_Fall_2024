@@ -1,7 +1,6 @@
 var first_click = 1
 
 const today = new Date();
-const dayOfMonth = today.getDate();
 d3.select("#right-div").style("width","70%")
 d3.select("#left-div").style("width","30%")
 const svg_calender = d3.select('#calendar').append('svg')
@@ -43,7 +42,7 @@ function create_year(data, info,select_year){
   d3.select("#tapBubble").style("display","none")
   d3.select("#centerBubble").style("display","flex")
   d3.select("#centerBubble").select("p").text("Scroll to explore monthly trends")
-  d3.select("#tapBubble").select("p").text("Tap a month to explore")  
+  d3.select("#tapBubble").select("p").text("Tap a month to explore")
   d3.select("#calendar").style("display","block")
   d3.select("#year-title").text(select_year)
   d3.select("#year-view-header").style("display","block")
@@ -203,12 +202,262 @@ for(i in calendarArray){
 
 }
 }
+function create_select_month_direct(svg_calender,select_date,data,info,first_click){
+  setTogglingEnabled(false);
+  select_year = select_date.getFullYear()
+  select_month = select_date.getMonth()
+  select_day = select_date.getDate()
+
+    console.log("Calendar: select Year: ",select_year)
+    d3.select("#tapBubble").style("display","none")
+    d3.select("#centerBubble").style("display","flex")
+    d3.select("#centerBubble").select("p").text("Scroll to explore monthly trends")
+    d3.select("#tapBubble").select("p").text("Tap a month to explore")
+    d3.select("#calendar").style("display","block")
+    d3.select("#year-title").text(select_year)
+    d3.select("#year-view-header").style("display","block")
+    d3.select("#daily_chart").style("display","none")
+    d3.select("#explain_text").style("display","block")
+    d3.select("#right-div").style("width","70%")
+    d3.select("#left-div").style("width","30%")
+    container = d3.select('#calendar');
+
+    // Get the width of the container div
+    containerWidth = screen.width*0.6;
+    containerHeight = screen.height*0.8;
+    d3.select("#centerBubble").style("display","none")
+    d3.select("#tapBubble").style("display","none")
+
+
+    // Get the width of the container div
+    containerWidth = screen.width*0.6;
+    containerHeight = screen.height*0.8;
+
+    d3.select("#calendar-header").style("display","none")
+    d3.select("#calendar").style("overflow-y","auto")
+
+    svg_calender.selectAll("*").remove()
+    svg_calender.attr("width", containerWidth) // 7 days for a week
+      .attr("height", containerHeight); // 6 rows to accommodate all days
+
+  d3.select("#right-div").style("width","50vw")
+  d3.select("#left-div").style("width","40vw")
+  d3.select("#daily_chart").style("display","block")
+  d3.select("#calendar-header").style("display","block")
+  d3.select("#calendar").style("overflow-y","hidden")
+  d3.select('#calendar-title')
+  .text(new Date(select_year, select_month)
+  .toLocaleString('en-us', { month: 'long' }) + " " + select_year)
+  d3.select("#daily_chart").style("display","block")
+  d3.select("#explain_text").style("display","none")
+  container = d3.select('#calendar');
+  // Get the width of the container div
+  containerWidth = container.node().getBoundingClientRect().width;
+  containerHeight = container.node().getBoundingClientRect().height;
+
+   const gridWidth = (containerWidth)/3;
+   const gridHeight = containerHeight/1.7;
+
+  svg_calender.attr("width", containerWidth ) // 7 days for a week
+    .attr("height", gridHeight*4+40); // 6 rows to accommodate all days
+
+  size = screen.width/(28*bar_height(300))
+  const dayWidth = containerWidth/7;
+  const dayHeight = containerHeight/7;
+  svg_calender.attr("width", containerWidth) // 7 days for a week
+    .attr("height", containerHeight); // 6 row
+
+  svg_calender.selectAll("*").remove()
+
+  svg_header= svg_calender.append('g')
+  svg_date = svg_calender.append('g')
+  svg_header.attr('transform', `translate(0, ${10})`);
+  svg_date.attr('transform', `translate(0, ${40+dayHeight / 2})`);
+
+  const cells_day = svg_header.selectAll("g")
+    .data(day_array)
+    .enter()
+    .append("g")
+    .attr("transform", (d, i) => {
+      const x = (i % 7) * dayWidth; // Calculate x based on the day of the week
+      const y = (Math.floor(i / 7)) * dayHeight*0.45; // Calculate y based on the week
+      return `translate(${x}, ${y})`;
+    });
+
+  // Add rectangles for each day cell
+  cells_day.append("rect")
+    .attr("width", dayWidth - 0.5) // Subtract 1 for grid gap
+    .attr("height", dayHeight/2 )
+    .style("fill", "none")
+    .style("stroke", "#ffffff")
+    .style("stroke-width",1)
+
+  // Add text labels for each day
+  cells_day.append("text")
+    .attr("x", dayWidth / 2)
+    .attr("y", (dayHeight/2-10) / 2)
+    .attr("text-anchor", "middle")
+    .attr("dy", "0.35em") // Vertical alignment
+    .text(d => d)
+    .attr('class','semi-title')
+
+  const monthData = data.filter(d => {
+      const selectedDate = new Date(select_year, select_month, 1); // Creating a Date object for the selected year and month
+      const dataDate = new Date(d.Date); // Creating a Date object for the data's date
+
+      // Checking if the year and month of the data's date match the selected year and month
+      return dataDate.getFullYear() === selectedDate.getFullYear() &&
+             dataDate.getMonth() === selectedDate.getMonth();
+  });
+  var data_for_day = []
+
+  // Define the start date of the month and the number of days in July 2023
+  const startDate = new Date(select_year, select_month, 1); // Months are zero-indexed, 6 represents July
+  const daysInMonth = new Date(select_year, select_month+1, 0).getDate(); // Get the last day of July
+
+  // Get the day of the week for July 1st, 2023
+  const startDay = startDate.getDay(); // For July 1st, 2023, this should be 6 (Saturday)
+
+  // Calculate the total number of calendar cells needed (including leading/trailing dates)
+  const totalCells = Math.ceil((startDay + daysInMonth) / 7) * 7;
+
+  // Generate an array for all the cells in the calendar
+  const calendarArray = Array.from({ length: totalCells }).map((_, i) => {
+    let day = i - startDay + 1; // Calculate the day number
+    return day > 0 && day <= daysInMonth ? day : ""; // Return day number or empty string
+  });
+
+  for(i in calendarArray){
+    cell = svg_date.append("g")
+    .attr("transform", function(){
+      const x = (i % 7) * dayWidth; // Calculate x based on the day of the week
+      const y = (Math.floor(i / 7)-0.5) * dayHeight+20; // Calculate y based on the week
+      return `translate(${x}, ${y})`;
+    });
+    cell.append("rect")
+      .attr('id',function(){
+        if(calendarArray[i]>0){
+          return "edge"
+        }
+        else{
+          return "empty"
+        }
+      })
+      .attr("width", dayWidth -0.5) // Subtract 1 for grid gap
+      .attr("height", dayHeight - 0.5)
+      .style("fill", function(){
+        if(calendarArray[i]==select_day){
+          day_w = ((i-1) % 7) * dayWidth
+          day_h = (Math.floor((i-1)/ 7)-0.5) * dayHeight+20
+          console.log(day_w,day_h,select_day)
+          return "#DCEBFE"
+        }
+        else if(calendarArray[i]>0){
+          return "#ffffff"
+        }
+        else{
+          return "#eeeeee"
+        }
+      })
+      .style("opacity",1)
+      .style("stroke", "#E4E4E7")
+      .style("stroke-width",1)
+
+    cell.append("text")
+      .attr("x", dayWidth / 2)
+      .attr("y", 10)
+      .attr("text-anchor", "middle")
+      .attr("dy", "0.35em") // Vertical alignment
+      .text(calendarArray[i])
+      .attr('class','note')
+
+    var data_for_day = []
+
+    if(calendarArray[i]>0){
+      data_for_day = monthData.filter(d => d.Date.getDate() === calendarArray[i])
+      if(data_for_day.length>0){
+        if(chart_type=='circular'){
+          create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
+
+        }
+        else{
+          size = screen.width/(20*bar_height(300))
+          create_bar_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
+
+        }
+
+        //create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
+      }
+      else{
+        cell.append("text").attr("x", dayWidth / 2)
+        .attr("y", dayHeight/2+10)
+        .attr("text-anchor", "middle")
+        .text("Missing")
+        .style("fill","#999999")
+        .style("font-size",30)
+        }
+      }
+
+
+}
+
+data_for_day = monthData.filter(d => d.Date.getDate() === select_day)
+console.log(select_day)
+if(chart_type=='circular'){
+  create_rosa((1+select_month).toString()+"/"+select_day+"/"+select_year,data_for_day,info)
+}
+else{
+  create_bar((1+select_month).toString()+"/"+select_day+"/"+select_year,data_for_day,info)
+}
+
+d3.select('#prev-month-btn').on('click', function() {
+  console.log("Calendar: back-month")
+    // Decrement the month and update year if needed
+    select_month--;
+    if (select_month < 0) {
+        select_month = 11;
+        select_year--;
+    }
+    if (select_year < 2014) {
+        // Reset to the minimum limit
+        select_year = 2014;
+        select_month = 0;
+    }
+    first_click = 1
+    create_select_month(svg_calender,select_month,data,info,first_click)
+});
+
+// Click event handler for the next month button
+d3.select('#next-month-btn').on('click', function() {
+    console.log("Calendar: next-month")
+    // Increment the month and update year if needed
+    select_month++;
+    if (select_month > 11) {
+        select_month = 0;
+        select_year++;
+    }
+    if (select_year > 2023) {
+        // Reset to the maximum limit
+        select_year = 2023;
+        select_month = 11;
+    }
+    first_click = 1
+    create_select_month(svg_calender,select_month,data,info,first_click)
+});
+d3.select('#back-to-year-btn').on('click', function() {
+  console.log("Calendar: back-to-year")
+  create_year(data, info,select_year)
+})
+}
 function create_select_month(svg_calender,select_month,data,info,first_click){
   setTogglingEnabled(false);
 
-    d3.select("#centerBubble").style("display","none")
-    d3.select("#tapBubble").style("display","none")
-  
+  // Get the width of the container div
+  containerWidth = screen.width*0.6;
+  containerHeight = screen.height*0.8;
+  d3.select("#centerBubble").style("display","none")
+  d3.select("#tapBubble").style("display","none")
+
 
   d3.select("#right-div").style("width","50vw")
   d3.select("#left-div").style("width","40vw")
@@ -317,10 +566,10 @@ containerHeight = container.node().getBoundingClientRect().height;
       .attr("width", dayWidth -0.5) // Subtract 1 for grid gap
       .attr("height", dayHeight - 0.5)
       .style("fill", function(){
-        if(calendarArray[i]==dayOfMonth){
+        if(calendarArray[i]==select_day){
           day_w = ((i-1) % 7) * dayWidth
           day_h = (Math.floor((i-1)/ 7)-0.5) * dayHeight+20
-          console.log(day_w,day_h,dayOfMonth)
+          console.log(day_w,day_h,select_day)
           return "#DCEBFE"
         }
         else if(calendarArray[i]>0){
@@ -372,12 +621,12 @@ containerHeight = container.node().getBoundingClientRect().height;
 
 }
 
-data_for_day = monthData.filter(d => d.Date.getDate() === dayOfMonth)
+data_for_day = monthData.filter(d => d.Date.getDate() === select_day)
 if(chart_type=='circular'){
-  create_rosa((1+select_month).toString()+"/"+dayOfMonth+"/"+select_year,data_for_day,info)
+  create_rosa((1+select_month).toString()+"/"+select_day+"/"+select_year,data_for_day,info)
 }
 else{
-  create_bar((1+select_month).toString()+"/"+dayOfMonth+"/"+select_year,data_for_day,info)
+  create_bar((1+select_month).toString()+"/"+select_day+"/"+select_year,data_for_day,info)
 }
 
 d3.select('#prev-month-btn').on('click', function() {
