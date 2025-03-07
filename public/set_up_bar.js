@@ -26,7 +26,7 @@ const org_data  = [
   { Type: 'PM10', Value: '43 ug/m3' },
   { Type: 'O3', Value: '0.081 ppm' },
   { Type: 'SO2', Value: '0.4 ppb' },
-  { Type: 'PM2.5', Value: '25.5 ug/m3' }, 
+  { Type: 'PM2.5', Value: '25.5 ug/m3' },
 ]
 const data = [
   { Type: 'NO2', Value: 78 },
@@ -51,10 +51,10 @@ const radiusScale = d3.scaleLinear()
 // Function to calculate rotation for each bar
 const calculateRotation = d => (angleScale(d.Type) * 180 / Math.PI-90)
 
-var barwidth = 160
-var padding_bar = 120
-var padding_text = 300
-var text_length = barwidth*6 + padding_bar*5 - padding_text
+var barwidth = window.innerWidth/20
+var padding_bar = barwidth/2
+var padding_text = barwidth
+var text_length = barwidth*6 + padding_bar*10
 
 let AQI_value = 0
 let DP
@@ -195,7 +195,7 @@ Promise.all([
     if(currentIndex==functionsArray.length-1){
       len = 15000
     }
-    
+
   });
 
   // Modified event listener for the previous button
@@ -206,7 +206,7 @@ Promise.all([
       runFunctionAtIndex();
       updateProgressIndicator(); // Call this function to update the visual progress indicator
     }
-    
+
   });
 
 })
@@ -214,17 +214,16 @@ let explainText
 function raw_number(data,info){
   console.log("Explain-Animation: raw_number")
   len = 8000
-  barwidth = 160
-  padding_bar = 120
+  barwidth = window.innerWidth/15
+  padding_bar = barwidth/2
   explain_group.selectAll("*").remove()
   info_group.selectAll("*").remove()
   bars_group.selectAll("*").remove()
   d3.select("#circle_bar").remove()
 
   explainText = document.getElementById('explain-text');
-  console.log(explainText)
   const textBox = document.getElementById('text-box');
-  
+
   const paddingH = 20; // Horizontal padding
   const paddingV = 10; // Vertical padding
 
@@ -237,7 +236,7 @@ function raw_number(data,info){
   const textHeight = bbox.height;
 
   // Set the dimensions and position of the bounding box
-  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.width = text_length+0.5*padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
   textBox.style.left = '51%';
   textBox.style.top = '20%';
@@ -308,7 +307,7 @@ function create_number(date, data, info){
   explainText = document.getElementById('explain-text');
 
   const textBox = document.getElementById('text-box');
-  
+
   const paddingH = 20; // Horizontal padding
   const paddingV = 10; // Vertical padding
 
@@ -321,7 +320,7 @@ function create_number(date, data, info){
   const textHeight = bbox.height;
 
   // Set the dimensions and position of the bounding box
-  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.width = text_length+0.5*padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
   textBox.style.left = '51%';
   textBox.style.top = '20%';
@@ -331,7 +330,7 @@ function create_number(date, data, info){
   explainText.style.left = '50%';
   explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
-  explainText.maxWidth = text_length+ 'px';
+  explainText.maxWidth = 2*text_length+ 'px';
 
 
   // Append a rect to each group
@@ -358,24 +357,24 @@ function create_number(date, data, info){
 }
 function change_AQI(){
   console.log("Explain-Animation: change_AQI")
-  
+
   explainText = document.getElementById('explain-text');
 
   const textBox = document.getElementById('text-box');
-  
+
   const paddingH = 20; // Horizontal padding
   const paddingV = 10; // Vertical padding
 
   // Set the text content
   explainText.innerHTML = ' For public communication purpose, instead of reporting the concentration, scientists first convert these raw numbers into a value range from 0 - 500 based on a math equation.';
-  explainText.maxWidth = text_length+ 'px';
+  explainText.maxWidth = 2*text_length+ 'px';
   // Get the dimensions of the text
   const bbox = explainText.getBoundingClientRect();
   const textWidth = bbox.width;
   const textHeight = bbox.height;
 
   // Set the dimensions and position of the bounding box
-  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.width = text_length+0.5*padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
   textBox.style.left = '51%';
   textBox.style.top = '20%';
@@ -385,7 +384,7 @@ function change_AQI(){
   explainText.style.left = '50%';
   explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
-  
+
 
   /*
   explain_text.text('For public communication purpose, instead of reporting the concentration, scientists first convert these raw numbers into a value range from 0 -- 500 based on a math equation.')
@@ -413,7 +412,7 @@ line.transition()
   .attr('x2', barwidth) // 根据文本宽度调整终点的 x 坐标
   line.transition()
   .delay(700)
-  .style('opacity', 0); // 根据文本宽度调整终点的 x 坐标  
+  .style('opacity', 0); // 根据文本宽度调整终点的 x 坐标
 
   labels2.transition()
   .delay(700) // 这里的延迟需要比横线的动画时间长一些
@@ -440,24 +439,24 @@ else{
 function color_code(date, data, info){
   console.log("Explain-Animation: color_code")
   next = 0
-  
+
   explainText = document.getElementById('explain-text');
 
   const textBox = document.getElementById('text-box');
-  
+
   const paddingH = 20; // Horizontal padding
   const paddingV = 10; // Vertical padding
 
   // Set the text content
   explainText.innerHTML = ' For public communication purpose, instead of reporting the concentration, scientists first convert these raw numbers into a value range from 0 - 500 based on a math equation.';
-  explainText.maxWidth = text_length+ 'px';
+  explainText.maxWidth = 2*text_length+ 'px';
   // Get the dimensions of the text
   const bbox = explainText.getBoundingClientRect();
   const textWidth = bbox.width;
   const textHeight = bbox.height;
 
   // Set the dimensions and position of the bounding box
-  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.width = text_length+0.5*padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
   textBox.style.left = '51%';
   textBox.style.top = '20%';
@@ -496,17 +495,17 @@ function color_code(date, data, info){
 function create_bar(date, data, info){
   console.log("Explain-Animation: create_bar")
   back = 0
-  
+
   explainText = document.getElementById('explain-text');
 
   const textBox = document.getElementById('text-box');
-  
+
   const paddingH = 20; // Horizontal padding
   const paddingV = 10; // Vertical padding
 
   // Set the text content
   explainText.innerHTML = 'What if for each pollutant we create a bar, and use the <b>AQI value as each bar’s height</b>?';
-  explainText.maxWidth = text_length+ 'px';
+  explainText.maxWidth = 2*text_length+ 'px';
   // Get the dimensions of the text
   const bbox = explainText.getBoundingClientRect();
   const textWidth = bbox.width;
@@ -559,14 +558,14 @@ const paddingV = 10; // Vertical padding
 
 // Set the text content
 explainText.innerHTML = 'And of AQI of Day will take the <b>worst case</b>, which is the <b>highest AQI value</b> among all the pollutants. The pollutant that has the highest AQI is the <b>Driver Pollutant</b> of the day.';
-explainText.maxWidth = text_length+ 'px';
+explainText.maxWidth = 2*text_length+ 'px';
 // Get the dimensions of the text
 const bbox = explainText.getBoundingClientRect();
 const textWidth = bbox.width;
 const textHeight = bbox.height;
 
 // Set the dimensions and position of the bounding box
-textBox.style.width = text_length+padding_text + 'px';
+textBox.style.width = text_length+0.5*padding_text + 'px';
 textBox.style.height = (textHeight + paddingV * 2) + 'px';
 textBox.style.left = '51%';
 textBox.style.top = '20%';
@@ -579,8 +578,8 @@ explainText.style.transform = 'translate(-50%, -50%)';
 // Append a rect to each group
 
 info_group.selectAll("*").remove()
-  barwidth = 160
-  padding_bar = 120
+  barwidth = window.innerWidth/20
+  padding_bar = barwidth/2
   barGroups
   .transition()
   .delay(function(d,i) {
@@ -588,7 +587,7 @@ info_group.selectAll("*").remove()
   })
   .duration(800)
   .attr("transform", function(d,i) {
-    return `translate(${(i-5/2)*(padding_bar+barwidth)-50},0)`;
+    return `translate(${(i-5/2)*(padding_bar+barwidth)},0)`;
   });
 
 
@@ -693,25 +692,25 @@ info_group
 function stack(distance,info){
   console.log("Explain-Animation: stack")
   back = 1
-  
-  
+
+
   explainText = document.getElementById('explain-text');
 
   const textBox = document.getElementById('text-box');
-  
+
   const paddingH = 20; // Horizontal padding
   const paddingV = 10; // Vertical padding
 
   // Set the text content
   explainText.innerHTML = 'The AQI of the day is <b>136</b>, which is <b>Unhealthy for Sensitive Group!</b>.';
-  explainText.maxWidth = text_length+ 'px';
+  explainText.maxWidth = 2*text_length+ 'px';
   // Get the dimensions of the text
   const bbox = explainText.getBoundingClientRect();
   const textWidth = bbox.width;
   const textHeight = bbox.height;
 
   // Set the dimensions and position of the bounding box
-  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.width = text_length+0.5*padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
   textBox.style.left = '51%';
   textBox.style.top = '20%';
@@ -786,24 +785,24 @@ function add_rosa(date,data,info){
 
 
   console.log("Explain-Animation: add_rosa")
-  
+
   explainText = document.getElementById('explain-text');
 
   const textBox = document.getElementById('text-box');
-  
+
   const paddingH = 20; // Horizontal padding
   const paddingV = 10; // Vertical padding
 
   // Set the text content
   explainText.innerHTML = 'We can further arrange the bars in to a circle by <b>rounding the x-axis</b>. Now the daily AQI is represented in the flower-like shape.';
-  explainText.maxWidth = text_length+ 'px';
+  explainText.maxWidth = 2*text_length+ 'px';
   // Get the dimensions of the text
   const bbox = explainText.getBoundingClientRect();
   const textWidth = bbox.width;
   const textHeight = bbox.height;
 
   // Set the dimensions and position of the bounding box
-  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.width = text_length+0.5*padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
   textBox.style.left = '51%';
   textBox.style.top = '20%';
@@ -1197,7 +1196,7 @@ for (i in data){
     // Append the text "Driver Pollutant"
     DP_info.append("tspan")
     .attr("dx", "-20")
-    .attr("dy", "1")        
+    .attr("dy", "1")
     .text(" Driver Pollutant")
     .style("font-weight", "bold")
     .style("fill", color_fill(AQI_value,view_type)); // Style the text color
@@ -1326,8 +1325,8 @@ function showDivLayout() {
   console.log("Explain: Info_card_filp")
   var content1 = document.getElementById('overlay-content1');
   var content2 = document.getElementById('overlay-content2');
-  var note_card = document.getElementById('note_card');  
-  
+  var note_card = document.getElementById('note_card');
+
   // Toggle between showing content1 and content2
   if (content1.style.display === 'none') {
     content1.style.display = 'block';

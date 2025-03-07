@@ -5,6 +5,7 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%; /* This ensures the html and body are full height */
+  font-size: 16px; /* Base font size */
 }
 html {
   touch-action:none;
@@ -19,8 +20,8 @@ content {
 }
 
 
-* {box-sizing:border-box}
 
+* {box-sizing:border-box}
 
 
 
@@ -48,31 +49,30 @@ content {
 }
 
 .axis{
-  font-size: 16px;
+  font-size: clamp(16px, 4vw, 32px);
   font-family:sans-serif;
 }
 .x-axis{
-  font-size: 16px;
+  font-size: clamp(16px, 4vw, 32px);
   font-family:sans-serif;
 }
 .pullution-axis{
-  font-size: 12px;
+  font-size: clamp(12px, 4vw, 24px);
   font-weight: 500;
 }
 .pullution-value{
-  font-size: 22px;
+  font-size: clamp(22px, 4vw, 32px);
   font-weight: 500;
 }
 
-.legend{
-  font-size: 22px;
+.legend {
+  font-size: clamp(18px, 2vw, 22px);
 }
-.rosa_text{
-  font-size:26px;
+.rosa_text {
+  font-size: clamp(20px, 3vw, 26px);
   font-weight:600;
   text-anchor:middle;
 }
-
 
 /* Base class for all floating elements with common properties */
 .floating-base {
@@ -98,7 +98,7 @@ content {
 }
 .floating-div-info p{
   color: #5F4E18; /* Sets the text color */
-  font-size: 16px; /* Sets the text font size */
+  font-size: clamp(10px, 0.8vw, 16px); /* Sets the text font size */
   text-align: left;
   margin: 0;
   height:100%;
@@ -116,51 +116,50 @@ content {
 }
 
 .aqi-value {
-  font-size: 32px;
+  font-size: clamp(12px, 1.5vw, 32px); /* Scales between 16px and 32px based on screen size */
   font-weight: bold;
   margin: 5px 0;
   padding-bottom: 16px;
   padding-top: 16px;
-
 }
+
 .date-text {
-padding-left: 20px;
-padding-top: 16px;
-padding-bottom: 16px;
-width:100%;
-  font-size: 18px;
+  font-size: clamp(10px, 0.9vw, 18px);
+  padding-left: 10px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  width:100%;
   font-weight: 400;
   margin: 2px 0;
   border-bottom: 1px solid #e2e2e2;
-
 }
-.text-info {
 
+.text-info {
+font-size: clamp(10px, 1vw, 32px);
 padding-bottom: 10px;
 color:#656565;
 
 }
-.pollutant-text-left {
-  font-size: 14px;
+.pollutant-text-left, .pollutant-text-right {
+  font-size: clamp(8px, 0.8vw, 16px);
   font-weight: 400;
   vertical-align: top;
-  display: inline-block; /* or 'block' depending on your layout needs */
-   max-width: 130px; /* Set your desired width */
-   word-wrap: break-word; /* Allows long words to wrap and break onto the next line */
-   text-align: center;
-   color:#656565;
- }
+  display: inline-block;
+  max-width: 130px;
+  word-wrap: break-word;
+  text-align: center;
+  color:#656565;
+}
+
 .separator {
 display: inline-block;
 vertical-align: top; /* Centers the dot vertically */
 margin: 0 8px; /* Adjust the margin to control spacing around the dot */
 margin-top: -8px;
-font-size:30px;
+font-size:clamp(30px, 4vw, 50px);
 color:black;
 }
 .pollutant-text-right {
-  font-size: 14px;
-  font-weight: 400;
   margin-left:4px;
   vertical-align: top;
 }
@@ -195,6 +194,7 @@ color:black;
   margin-bottom: 10px;
   padding-left: 30px;
   position: relative;
+  font-size: clamp(10px, 0.9vw, 16px);
 }
 
 .separator {
@@ -202,7 +202,7 @@ color:black;
   vertical-align: top;
   margin: 0 8px;
   margin-top: -8px;
-  font-size: 30px;
+  font-size: clamp(32px, 3vw, 60px);
   color: black;
 }
 
@@ -252,7 +252,7 @@ color:black;
    position: absolute;
     top:18vh;
     order: -1;
-    font-size:20px;
+    font-size:clamp(12px, 1vw, 24px);
     padding:6px 20px;
     background-color: #FAFAFA;
     border-radius: 10px;
@@ -263,7 +263,7 @@ color:black;
   background-color: transparent;
   cursor: pointer;
   margin: 0 10px;
-  font-size: 24px;
+  font-size: clamp(12px, 1vw, 24px);
   padding: 10px; /* Added padding to increase clickable area */
 }
 
@@ -297,13 +297,16 @@ color:black;
   font-family: sans-serif;
   font-weight: 500;
 }
+.note, #note_card {
+  font-size: clamp(10px, 1.2vw, 12px);
+  color: #777777;
+}
+
 .note {
-  font-size: 12px;
   font-family: sans-serif;
   color:#777777;
 }
 #note_card {
-  font-size: 12px;
   font-family: sans-serif;
   color:#777777;
   position: absolute;
@@ -343,13 +346,14 @@ color:black;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-.main_text{
-  font-size:20px;
+.main_text {
+  font-size: clamp(12px, 1vw, 20px);
 }
 
-.sub_title{
-  font-size:28px;
-  font-weight:500;
+
+.sub_title {
+  font-size: clamp(10px, 1vw, 20px);
+  font-weight: 500;
 }
 .center-container {
     display: flex;
@@ -522,7 +526,7 @@ p {
   .sidebar a {
     padding: 40px 15px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: clamp(9px, 1vw, 16px);;
     color: #353535;
     display: flex;
     align-items: flex-end; /* Align text to the bottom */
@@ -556,7 +560,7 @@ p {
     width: 20vw;
     text-decoration: none;
     color: #888888;
-    font-size: 26px;
+    font-size: clamp(16px, 1.5vw, 26px);
     height: 100%;
     padding-top: 4.5vh;
     border-bottom: 3px solid transparent;
@@ -590,18 +594,18 @@ p {
 
    #explain_text {
      background-color: #ffffff; /* White background */
-     padding: 20px; /* Padding inside the div */
+     padding: 0px; /* Padding inside the div */
    }
 
    h1 {
      color: #00529B; /* Blue color for the header */
-     font-size: 36px; /* Size of the font */
-     margin-bottom: 20px; /* Space after the header */
+     font-size: clamp(16px, 2vw, 24px); /* Size of the font */
+     margin-bottom: 10px; /* Space after the header */
      font-weight: 500;
    }
    h2 {
     color: #00529B; /* Blue color for the header */
-    font-size: 26px; /* Size of the font */
+    font-size: clamp(12px, 2vw, 22px); /* Size of the font */
     margin-bottom: 10px; /* Space after the header */
     font-weight: 500;
     margin-right:20px;
@@ -610,10 +614,10 @@ p {
 
    p {
      color: #333333; /* Dark grey color for the text */
-     font-size: 16px; /* Size of the font */
-     line-height: 1.5; /* Spacing between lines */
+     font-size: clamp(10px, 1vw, 20px); /* Size of the font */
+     line-height: 1.3; /* Spacing between lines */
      margin-top: 0;
-     margin-bottom: 40px; /* Space after the paragraph */
+     margin-bottom: 30px; /* Space after the paragraph */
    }
 
    .header-container {
@@ -637,7 +641,7 @@ p {
   }
   .explain-text {
     position: absolute;
-    font-size: 24px;
+    font-size: clamp(16px, 1.5vw, 24px);
     text-align: center;
     word-wrap: break-word; /* Ensure long words are broken and wrapped */
   }
